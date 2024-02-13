@@ -10,14 +10,15 @@ from config import args
 
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
+print(device)
 
 def main(mode: str):
     if mode == "train":
         generator = model_structure.Generator(z=args.z_dimension, 
                                               img_size=args.img_size, 
-                                              img_channel=args.img_channel)
+                                              img_channel=args.img_channel).to(device)
         discriminator = model_structure.Discriminator(img_size=args.img_size, 
-                                                      img_channel=args.img_channel)
+                                                      img_channel=args.img_channel).to(device)
         
         transform = transforms.Compose([
             transforms.Resize((128, 128)),
@@ -47,7 +48,7 @@ def main(mode: str):
                         device=device)
         
         utils.save_model(generator=generator,
-                         target_dir=args.target_dir,
+                         target_dir=args.save_path,
                          model_name=args.model_name)
     else:
         generator_structure = model_structure.Generator(z=args.z_dimension, 

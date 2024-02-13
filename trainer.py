@@ -4,6 +4,7 @@ from torch.utils.tensorboard import SummaryWriter
 from dataset import *
 from model_structure import *
 from utils import save_model
+from tqdm.auto import tqdm
 
 def train_step(generator: torch.nn.Module,
           discriminator: torch.nn.Module,
@@ -20,10 +21,9 @@ def train_step(generator: torch.nn.Module,
     gen_losses = 0
     disc_losses = 0
 
-    for batch in dataloader:
+    for batch in tqdm(dataloader):
         # Send train image to device
-        train_batch = batch[0]
-        train_batch.to(device)
+        train_batch = batch[0].to(device)
 
         ###### Train Distcriminator ######
         # Set zero_grad
@@ -109,13 +109,15 @@ def trainer(epochs: int,
         
         results["disc_loss"].append(disc_loss)
         results["gen_loss"].append(gen_loss)
-        writer.add_scalar(main_tag="Loss",
+        writer.add_scalars(main_tag="Loss",
                           tag_scalar_dict={"disc_loss": disc_loss,
                                            "gen_loss": gen_loss},
                           global_step=epoch)
+        img_grid = torchvision.utils.make_grid(generated_image)
         writer.add_image("Test Genorator", 
-                         generated_image, 
+                         img_grid, 
                          global_step=epoch)
+        print(f"[{epoch+1} / {epochs}] ---------------- disc_loss: {disc_loss}, gen_loss: {gen_loss}")
     writer.close()
     return results
 

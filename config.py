@@ -12,7 +12,7 @@ parser.add_argument("--img_channel", default=3, type=int)
 
 parser.add_argument("--batch_size", default=32, type=int)
 parser.add_argument("--num_worker", default=2, type=int)
-parser.add_argument("--train_range", default=0.7, type=float)
+parser.add_argument("--train_range", default=1.0, type=float)
 
 parser.add_argument("--data_path", default="/dress_dataset", type=str)
 parser.add_argument("--save_path", default="/model", type=str)
