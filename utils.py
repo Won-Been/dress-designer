@@ -2,6 +2,8 @@ import torch
 from torch import nn
 from torchvision.utils import make_grid
 from pathlib import Path
+from PIL import Image
+import imageio
 
 def weight_init(m):
     if isinstance(m, nn.Conv2d) or isinstance(m, nn.ConvTranspose2d):
@@ -21,3 +23,12 @@ def save_model(generator: torch.nn.Module,
 
     torch.save(obj=generator.state_dict(),
                f=model_save_dir)
+
+
+def create_gif(image_batches,
+               save_dir: str, 
+               save_name: str):
+
+    save_dir = Path(save_dir)
+    assert save_name.endswith(".gif"), "file name should be end with '.gif'"
+    imageio.mimsave(f"{save_dir / save_name}", image_batches)

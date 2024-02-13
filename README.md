@@ -1,6 +1,6 @@
-# DCGAN을 활용한 드레스 이미지 생성
+# PyTorch DCGAN
 
-## THIS IS ENGLISH VERSION OF [THIS PORJECT](https://github.com/Won-Been/ai06project4).
+## THIS IS ENGLISH AND PYTORCH VERSION OF [THIS PORJECT](https://github.com/Won-Been/ai06project4).
 
 ## 1. 이미지 전처리
 - 캐글에서 드레스 다운 받은 이미지의 사이즈를 (160, 120, 3)으로 줄인 후 추후 사용하기 편하도록 npz파일로 압축 저장한다.

@@ -1,10 +1,11 @@
 import torch
 import torchvision
 from torch.utils.tensorboard import SummaryWriter
+import numpy as np
+from tqdm.auto import tqdm
 from dataset import *
 from model_structure import *
-from utils import save_model
-from tqdm.auto import tqdm
+from utils import *
 
 def train_step(generator: torch.nn.Module,
           discriminator: torch.nn.Module,
@@ -93,7 +94,7 @@ def trainer(epochs: int,
                "gen_loss": []}
     
     writer = SummaryWriter()
-
+    test_images = []
     for epoch in range(epochs):
         disc_loss, gen_loss = train_step(generator=generator,
                                          discriminator=discriminator,
@@ -114,11 +115,14 @@ def trainer(epochs: int,
                                            "gen_loss": gen_loss},
                           global_step=epoch)
         img_grid = torchvision.utils.make_grid(generated_image)
+        test_image = img_grid.detach().cpu().numpy().transpose(1,2,0) * 255
+        test_images.append(test_image.astype(np.uint8))
         writer.add_image("Test Genorator", 
                          img_grid, 
                          global_step=epoch)
         print(f"[{epoch+1} / {epochs}] ---------------- disc_loss: {disc_loss}, gen_loss: {gen_loss}")
     writer.close()
+    create_gif(test_images, "./", "test_images.gif")
     return results
 
 
