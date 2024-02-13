@@ -31,7 +31,7 @@ def create_gif(image_batches,
 
     save_dir = Path(save_dir)
     assert save_name.endswith(".gif"), "file name should be end with '.gif'"
-    imageio.mimsave(f"{save_dir / save_name}", image_batches)
+    imageio.mimsave(f"{save_dir / save_name}", image_batches, loop=0)
 
 def plot_images(generated_image,
                 save_file_path: str,):

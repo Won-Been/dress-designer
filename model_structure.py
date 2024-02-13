@@ -127,23 +127,3 @@ class Discriminator(nn.Module):
     
     def forward(self, x):
         return self.discriminator(x)
-    
-if __name__=="__main__":
-    gen = Generator(100, 128, 3)
-    disc = Discriminator(128, 3)
-    # summary(model=gen,
-    #         input_size=(1,100,1,1),
-    #         col_names=["input_size",
-    #                    "output_size",
-    #                    "num_params",
-    #                    "trainable"],
-    #         col_width=20,
-    #         row_settings=["var_names"])
-    summary(model=disc,
-            input_size=(1,3,128,128),
-            col_names=["input_size",
-                       "output_size",
-                       "num_params",
-                       "trainable"],
-            col_width=20,
-            row_settings=["var_names"])

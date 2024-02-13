@@ -41,27 +41,3 @@ def DressDataset(data_path: str,
                                  num_workers=num_worker
                                  )
     return train_dataloader, test_dataloader
-
-if __name__=="__main__":
-    data_dir = Path("dress_dataset")
-    # data_list = glob.glob(f"{data_dir}/*.png")
-    # print(len(data_list))
-    transform = transforms.Compose([
-        transforms.Resize((640, 480)),
-        transforms.ToTensor()
-    ])
-    a, b = DressDataset(data_path=data_dir,
-                        transform=transform,
-                        train_range=0.7,
-                        batch_size=16,
-                        num_worker=0)
-    print(a, b)
-    print(next(iter(a))[0].shape)
-    sampel = next(iter(a))[0]
-    # print(make_grid(sampel))
-
-    import matplotlib.pyplot as plt
-    plt.figure(figsize=(8,8))
-    plt.axis("off")
-    plt.title("Training Images")
-    plt.imshow(make_grid(sampel).permute(1,2,0))
