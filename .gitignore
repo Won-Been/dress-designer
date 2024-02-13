@@ -1,2 +1,4 @@
 dress_dataset/
+model/
 *.zip
+*.pth

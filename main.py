@@ -31,31 +31,33 @@ def main(mode: str):
                                                                  num_worker=args.num_worker)
         loss_fn = torch.nn.BCELoss()
         gen_optimizer = torch.optim.Adam(params=generator.parameters(), 
-                                         lr=args.lr,
+                                         lr=args.gen_lr,
                                          betas=(args.momentum, 0.999))
         disc_optimizer = torch.optim.Adam(params=discriminator.parameters(), 
-                                         lr=args.lr,
+                                         lr=args.disc_lr,
                                          betas=(args.momentum, 0.999))
         
-        trainer.trainer(epochs=args.epochs, 
-                        generator=generator, 
-                        discriminator=discriminator, 
-                        train_dataloader=train_dataloader,
-                        loss_fn=loss_fn,
-                        gen_optimizer=gen_optimizer,
-                        disc_optimizer=disc_optimizer,
-                        batch_size=args.batch_size,
-                        device=device)
-        
+        test_images = trainer.trainer(epochs=args.epochs, 
+                                        generator=generator, 
+                                        discriminator=discriminator, 
+                                        train_dataloader=train_dataloader,
+                                        loss_fn=loss_fn,
+                                        gen_optimizer=gen_optimizer,
+                                        disc_optimizer=disc_optimizer,
+                                        batch_size=args.batch_size,
+                                        device=device)
+        utils.create_gif(test_images, "./", "test_images.gif")
         utils.save_model(generator=generator,
                          target_dir=args.save_path,
                          model_name=args.model_name)
     else:
-        generator_structure = model_structure.Generator(z=args.z_dimension, 
+        generator = model_structure.Generator(z=args.z_dimension, 
                                               img_size=args.img_size, 
-                                              img_channel=args.img_channel)
-        model_path = Path(args.save_path) / args.model_name
-        generator = generator_structure.load_state_dict(torch.load(model_path))
-        trainer.test_step(generator=generator,
-                          batch_size=args.batch_size,
-                          device=device)
+                                              img_channel=args.img_channel)        
+        generator.load_state_dict(torch.load(args.model_path))
+        generator.to(device)
+        generated_img = trainer.test_step(generator=generator,
+                                            batch_size=args.batch_size,
+                                            device=device)
+        utils.plot_images(generated_image=generated_img,
+                          save_file_path=args.generated_img_path)

@@ -122,24 +122,4 @@ def trainer(epochs: int,
                          global_step=epoch)
         print(f"[{epoch+1} / {epochs}] ---------------- disc_loss: {disc_loss}, gen_loss: {gen_loss}")
     writer.close()
-    create_gif(test_images, "./", "test_images.gif")
-    return results
-
-
-if __name__=="__main__":
-    gen = Generator(z=100, img_size=128, img_channel=3)
-    disc = Discriminator(img_size=128, img_channel=3)
-    data_dir = Path("dress_dataset")
-    # data_list = glob.glob(f"{data_dir}/*.png")
-    # print(len(data_list))
-    transform = transforms.Compose([
-        transforms.Resize((128, 128)),
-        transforms.ToTensor()
-    ])
-    dataloader, _ = DressDataset(data_path=data_dir, transform=transform, train_range=0.7, batch_size=1, num_worker=0)
-    lossfn = torch.nn.BCELoss()
-    gen_optimizer = torch.optim.Adam(params=gen.parameters(), lr=0.0002, betas=(0.5, 0.999))
-    disc_optimizer = torch.optim.Adam(params=gen.parameters(), lr=0.0002, betas=(0.5, 0.999))
-    test_image = test_step(gen, batch_size=1, device="cpu")
-    print(test_image)
-    
+    return test_images

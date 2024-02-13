@@ -1,6 +1,7 @@
+import numpy as np
 import torch
 from torch import nn
-from torchvision.utils import make_grid
+from torchvision.utils import make_grid, save_image
 from pathlib import Path
 from PIL import Image
 import imageio
@@ -24,7 +25,6 @@ def save_model(generator: torch.nn.Module,
     torch.save(obj=generator.state_dict(),
                f=model_save_dir)
 
-
 def create_gif(image_batches,
                save_dir: str, 
                save_name: str):
@@ -32,3 +32,8 @@ def create_gif(image_batches,
     save_dir = Path(save_dir)
     assert save_name.endswith(".gif"), "file name should be end with '.gif'"
     imageio.mimsave(f"{save_dir / save_name}", image_batches)
+
+def plot_images(generated_image,
+                save_file_path: str,):
+    img_grid = make_grid(generated_image)
+    save_image(img_grid, save_file_path)
