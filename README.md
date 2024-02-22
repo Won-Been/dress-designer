@@ -1,6 +1,6 @@
 # Dress Designer
 
-## THIS IS ENGLISH AND PYTORCH VERSION OF [THIS PORJECT](https://github.com/Won-Been/ai06project4).
+## THIS IS PYTORCH VERSION OF [THIS PORJECT](https://github.com/Won-Been/ai06project4).
 
 ## 1. DCGAN
 - Model architecture([DCGAN](https://arxiv.org/abs/1511.06434))
